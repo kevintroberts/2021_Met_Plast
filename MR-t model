@@ -1,0 +1,37 @@
+
+
+
+
+temp <- read.csv("incubator_temps.csv")
+
+FebT<- subset(temp,temp$curve==2)
+MarT<- subset(temp,temp$curve==3)
+AprT<- subset(temp,temp$curve==4)
+allT <- rbind(FebT,MarT,AprT)
+
+
+#Dynamic model
+allT$O2Ddry <-ifelse(allT$curve==2,(0.17267*allT$dry+(0.1612*0-1.95211)), ifelse(allT$curve==3,(0.17267*allT$dry+(0.1612*1-1.95211)),ifelse(allT$curve==4,(0.17267*allT$dry+(0.1612*2-1.95211)),NA)) )
+allT$O2Dsnow <-ifelse(allT$curve==2,(0.17267*allT$snowy+(0.1612*0-1.95211)), ifelse(allT$curve==3,(0.17267*allT$snowy+(0.1612*1-1.95211)),ifelse(allT$curve==4,(0.17267*allT$snowy+(0.1612*2-1.95211)),NA)) )
+
+##########Static
+allT$O2Sdry <- (0.17267*allT$dry)-1.95211
+allT$O2Ssnow <- (0.17267*allT$snow)-1.95211
+
+####Acclimation
+allT$O2Adry <- (0.16365*allT$dry)-1.820099
+allT$O2Asnow <- (0.17267*allT$snow)-1.95211
+
+
+#sum
+
+(sum(exp(allT$O2Sdry))/2000)
+(sum(exp(allT$O2Ssnow))/2000)
+
+(sum(exp(allT$O2Ddry))/2000)
+(sum(exp(allT$O2Dsnow))/2000)
+
+(sum(exp(allT$O2Adry))/2000)
+(sum(exp(allT$O2Asnow))/2000)
+
+
