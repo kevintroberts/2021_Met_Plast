@@ -1,0 +1,31 @@
+m <- read.csv("phys_data.csv")
+
+library(nlme)
+library(car)
+library(carData)
+library(lmerTest)
+library(lme4)
+
+
+
+
+#Full factorial
+l1 <- lmer(log(vo2) ~  temp*treatment*time+ mass + (1| id) , data=m)
+summary(l1)
+
+
+#step function for model selection
+step(l1,ddf="Kenward-Roger")
+
+#final model suggested by step
+lfull <- lmer(log(vo2) ~ temp + treatment + temp:treatment + time + mass + (1 | id)  , data=m)
+summary(lfull)
+Anova(lfull, test="F", type=3)
+
+#extract values to plot for Figure 1
+ltime <- lmer(log(vo2) ~  temp *time   +  (1| id) , data=m)
+summary(ltime)
+
+#extract values to plot for Figure 2
+lacclim <- lmer(log(vo2) ~  temp *treatment  +  (1| id) , data=m)
+summary(lacclim)
