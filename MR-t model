@@ -2,7 +2,7 @@
 
 
 
-temp <- read.csv("treatment_temps.csv")
+temp <- read.csv("thermal_regime.csv")
 
 FebT<- subset(temp,temp$curve==2)
 MarT<- subset(temp,temp$curve==3)
